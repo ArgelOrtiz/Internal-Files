@@ -7,6 +7,7 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -44,9 +45,12 @@ public class MainActivity extends AppCompatActivity {
         balanceInputEditText    = findViewById(R.id.balanceMainInputEditText);
         listTextView            = findViewById(R.id.listMainTextView);
         Button addButton        = findViewById(R.id.addMainButton);
+        Button updateButton     = findViewById(R.id.updateMainButton);
         Button deleteButton     = findViewById(R.id.deleteMainButton);
         Button showButton       = findViewById(R.id.showMainButton);
         Button clearButton      = findViewById(R.id.clearMainButton);
+        Button DeleteCodeButton = findViewById(R.id.deleteCodeMainButton);
+        final ScrollView scrollView   = findViewById(R.id.scrollView);
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +96,48 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        updateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listTextView.setVisibility(View.GONE);
+                String file ;
+
+                String code     = codeTextInputEditTExt.getText().toString();
+                String name     = nameTextInputEditText.getText().toString();
+                String phone    = phoneTextInputEditText.getText().toString();
+                double balance  = Double.parseDouble(balanceInputEditText.getText().toString());
+
+
+                if (code.isEmpty()){
+                    Snackbar.make(v,"Ingrese la clave",Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+
+                if (name.isEmpty()){
+                    Snackbar.make(v,"Ingrese el nombre",Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+
+                if (phone.isEmpty()){
+                    Snackbar.make(v,"Ingrese el telefono",Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+
+                file = "Clave: "+code+" Nombre: "+name+" Telefono: "+phone+" Saldo: "+balance+",";
+
+                try {
+
+                    update(file,code);
+                    clearForm();
+
+                    Snackbar.make(v,"Se registro con exito ",Snackbar.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    Log.e("Create",e.getMessage());
+                    Snackbar.make(v,"Ocurrio un error al crear el registro: "+e.getMessage(),Snackbar.LENGTH_LONG).show();
+                }
+            }
+        });
+
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 listTextView.setVisibility(View.GONE);
+                scrollView.scrollTo(0,scrollView.getBottom());
 
                 try {
                     leer();
@@ -132,10 +179,32 @@ public class MainActivity extends AppCompatActivity {
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                clearForm();
+            }
+        });
 
+        DeleteCodeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listTextView.setVisibility(View.GONE);
+
+                try {
+                    String code     = codeTextInputEditTExt.getText().toString();
+
+                    if (code.isEmpty()){
+                        Snackbar.make(v,"Ingrese la clave",Snackbar.LENGTH_LONG).show();
+                        return;
+                    }
+
+                    deleteByCode(code);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
+
+
 
     public void crear(String regpro) throws Exception {
 
@@ -157,6 +226,46 @@ public class MainActivity extends AppCompatActivity {
             OutputStreamWriter fout = new OutputStreamWriter(new FileOutputStream(f));
             fout.write(cadena);
             fout.close();
+
+
+//        }
+    }
+
+    public void update(String regpro, String code) throws Exception {
+
+        //Comprobamos el estado de la memoria externa (tarjeta SD)
+//        String estado = Objects.requireNonNull(getApplicationContext()).getFilesDir().getPath().;
+
+
+//        if (estado.equals(Environment.MEDIA_MOUNTED)) {
+
+        try{
+
+            cadena = "";
+            String s;
+
+            File ruta_sd =  new File(Objects.requireNonNull(getApplicationContext()).getFilesDir().getPath());
+            File f = new File(ruta_sd.getAbsolutePath(), "Productos.txt");
+            BufferedReader fin = new BufferedReader(new InputStreamReader(new FileInputStream(f)));
+
+            while((s = fin.readLine())!=null) {
+
+                if (s.contains(code))
+                    cadena+=regpro+"\n";
+                else
+                    cadena+=s+"\n";
+            }
+            fin.close();
+
+        }catch (IOException e){
+            Log.e("Read",e.getMessage());
+        }
+
+        File ruta_sd = new File(Objects.requireNonNull(getApplicationContext()).getFilesDir().getPath());
+        File f = new File(ruta_sd.getAbsolutePath(), "Productos.txt");
+        OutputStreamWriter fout = new OutputStreamWriter(new FileOutputStream(f));
+        fout.write(cadena);
+        fout.close();
 
 
 //        }
@@ -187,6 +296,25 @@ public class MainActivity extends AppCompatActivity {
         fout.write(cadena);
         fout.close();
 
+    }
+
+    public void deleteByCode(String code) throws IOException {
+        cadena = "";
+        String s;
+
+        File ruta_sd =  new File(Objects.requireNonNull(getApplicationContext()).getFilesDir().getPath());
+        File f = new File(ruta_sd.getAbsolutePath(), "Productos.txt");
+        BufferedReader fin = new BufferedReader(new InputStreamReader(new FileInputStream(f)));
+
+        while((s = fin.readLine())!=null) {
+            if ( !s.contains(code) )
+                cadena += s + "\n";
+        }
+        fin.close();
+
+        OutputStreamWriter fout = new OutputStreamWriter(new FileOutputStream(f));
+        fout.write(cadena);
+        fout.close();
     }
 
     protected void clearForm(){

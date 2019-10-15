@@ -9,6 +9,7 @@
     tools:context=".MainActivity">
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -129,57 +130,96 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <LinearLayout
-                android:id="@+id/gridLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+
+            <Button
+                android:id="@+id/addMainButton"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_margin="10dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="16dp"
-                android:orientation="horizontal"
+                android:layout_weight="1"
+                android:background="@drawable/button_rounded"
+                android:text="Agregar"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="15sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout4">
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout4" />
 
-                <Button
-                    android:id="@+id/addMainButton"
-                    android:layout_width="0dp"
-                    android:layout_height="32dp"
-                    android:layout_weight="1"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/button_rounded"
-                    android:text="Agregar"
-                    android:textAllCaps="false"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="15sp" />
-
-                <Button
-                    android:id="@+id/deleteMainButton"
-                    android:layout_width="0dp"
-                    android:layout_height="32dp"
-                    android:layout_weight="1"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/button_rounded"
-                    android:text="Eliminar"
-                    android:textAllCaps="false"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="15sp" />
-
-                <Button
-                    android:id="@+id/showMainButton"
-                    android:layout_width="0dp"
-                    android:layout_height="32dp"
-                    android:layout_weight="1"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/button_rounded"
-                    android:text="Listar"
-                    android:textAllCaps="false"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="15sp" />
+            <Button
+                android:id="@+id/deleteMainButton"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_margin="10dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_rounded"
+                android:text="Eliminar"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/deleteCodeMainButton" />
 
 
+            <Button
+                android:id="@+id/showMainButton"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_margin="10dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_rounded"
+                android:text="Listar"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/addMainButton" />
 
-            </LinearLayout>
+            <Button
+                android:id="@+id/deleteCodeMainButton"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_margin="10dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_rounded"
+                android:text="Eliminar por codigo"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/updateMainButton" />
+
+            <Button
+                android:id="@+id/updateMainButton"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_margin="10dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_rounded"
+                android:text="Actualizar"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/showMainButton" />
 
             <Button
                 android:id="@+id/clearMainButton"
@@ -187,7 +227,7 @@
                 android:layout_height="32dp"
                 android:layout_margin="10dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/button_rounded"
                 android:text="Limpiar formulario"
@@ -195,8 +235,9 @@
                 android:textColor="@color/colorWhite"
                 android:textSize="15sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.461"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/gridLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/deleteMainButton" />
 
             <TextView
                 android:id="@+id/listMainTextView"
